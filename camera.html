@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="bootstrap.min.css"/>
+    </head>
+    <body class="container-fluid" onload="init();">
+        <div class="row justify-content-center" style="margin-top: 20px">
+            <div class="col-3">
+                <button class="btn btn-primary" onclick="snapshot();"style="
+                        width: 100%;
+                        height: 45px;
+                        color: white;
+                        text-align: center;
+                        font-weight: bold
+                        ">
+                    
+                    <i class="fa fa-camera"></i>
+                    Take photo
+                </button>
+            </div>    
+                
+            <div class="col-3">
+                <button class="btn btn-danger" onclick="startWebcam();" style="
+                        width: 100%;
+                        height: 45px;
+                        color: white;
+                        text-align: center;
+                        font-weight: bold
+                        ">
+                    <i class="fa fa-star"></i>
+                    Start Camera
+                </button>
+            </div>
+        </div>
+        <div class="row justify-content-center" style="
+             margin-top: 10px
+             ">
+            <div class="col-lg-6" style="
+                 height: 350px;
+                 border-radius: 12px;
+                 background-image: url('business-people-background-550x352.png')
+                 ">
+                
+                <canvas  id="myCanvas" style="width: 100%;height: 100%;border-radius: 12px"></canvas>
+            </div>
+            <video class="col-lg-6" onclick="snapshot(this);" id="video" controls autoplay style="
+                 height: 350px;
+                 border: #d3d3d3 1px double;
+                 border-style: double;
+                 border-radius: 12px;
+                 background-color: #eeeeee
+                 ">
+            </video>
+        </div>
+        <script>
+      //--------------------
+      // GET USER MEDIA CODE
+      //--------------------
+          navigator.getUserMedia = ( navigator.getUserMedia ||
+                             navigator.webkitGetUserMedia ||
+                             navigator.mozGetUserMedia ||
+                             navigator.msGetUserMedia);
+
+      var video;
+      var webcamStream;
+
+      function startWebcam() {
+        if (navigator.getUserMedia) {
+           navigator.getUserMedia (
+
+              // constraints
+              {
+                 video: true,
+                 audio: false
+              },
+
+              // successCallback
+              function(localMediaStream) {
+                  video = document.querySelector('video');
+                 video.src = window.URL.createObjectURL(localMediaStream);
+                 webcamStream = localMediaStream;
+              },
+
+              // errorCallback
+              function(err) {
+                 console.log("The following error occured: " + err);
+              }
+           );
+        } else {
+           console.log("getUserMedia not supported");
+        }  
+      }
+
+      function stopWebcam() {
+          webcamStream.stop();
+      }
+      //---------------------
+      // TAKE A SNAPSHOT CODE
+      //---------------------
+      var canvas, ctx;
+
+      function init() {
+        // Get the canvas and obtain a context for
+        // drawing in it
+        canvas = document.getElementById("myCanvas");
+        ctx = canvas.getContext('2d');
+      }
+
+      function snapshot() {
+         // Draws current image from the video element into the canvas
+        ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+      }
+
+  </script>
+    </body>
+</html>
+  
